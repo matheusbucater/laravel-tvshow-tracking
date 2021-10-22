@@ -32,10 +32,12 @@ class TvShow extends Model
         $show = $this->getTvShow();
         $seasons = $show->seasons;
         $seasons_numbers = [];
-        foreach ($seasons as $season) {
-            array_push($seasons_numbers, $season->season_number);
-        }
-        return $seasons_numbers;
+//        foreach ($seasons as $season) {
+//            array_push($seasons_numbers, $season->season_number);
+//        }
+        $season_range = [$seasons[0]->season_number, end($seasons)->season_number];
+//        dd($seasons[0]->season_number, end($seasons)->season_number);
+        return $season_range;
     }
 
     function getSeason($season_number) {
