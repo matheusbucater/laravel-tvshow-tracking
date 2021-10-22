@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    @if($shows)
+    @if($shows->count() !== 0)
         <div class="row px-5 py-4">
             @foreach($shows as $show)
                 <div class="col-3">
@@ -29,7 +29,8 @@
         {{ $shows->links() }}
     </div>
     @else
+
         {{--TODO--}}
-        Not Found
+        Not FOund
     @endif
 </x-app-layout>

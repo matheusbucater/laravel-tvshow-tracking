@@ -13,7 +13,7 @@ class CreatePercentagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('show_percentages', function (Blueprint $table) {
+        Schema::create('shows_percentages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tvshow_id')->references('id')->on('tvshows')->onDelete('cascade');
             $table->float('percentage');

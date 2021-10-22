@@ -29,7 +29,11 @@ class EpisodeController extends Controller
                 ['tvshow_id', '=', $tvshow->id],
                 ['season_number', '=', $number]
             ])->first();
-            $percentage = $season_percentage->getPercentage();
+            if($season_percentage) {
+                $percentage = $season_percentage->getPercentage();
+            } else {
+                $percentage = 0;
+            }
         } else {
             $user_episodes = null;
             $percentage = null;

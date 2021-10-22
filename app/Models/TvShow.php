@@ -78,11 +78,15 @@ class TvShow extends Model
 
     function getLastSeason() {
         $episodes = [];
-        foreach ($this->episodes as $episode) {
-            array_push($episodes, $episode->episode_number);
+        if ($this->episodes->count() !== 0) {
+            foreach ($this->episodes as $episode) {
+                array_push($episodes, $episode->episode_number);
+            }
+            rsort($episodes);
+            return preg_split('/[se]/', $episodes[0])[1];
+        } else {
+            return 1;
         }
-        rsort($episodes);
-        return preg_split('/[se]/', $episodes[0])[1];
     }
 
     function getSeasonNumberOfEpisodes($season_number) {
