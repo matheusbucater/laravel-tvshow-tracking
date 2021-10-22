@@ -39,7 +39,6 @@
             @endforeach
         </div>
     @else
-        {{--TODO--}}
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -49,15 +48,15 @@
                                 <h3>We didn't find any matching results for '{{ $search_request }}'.</h3>
                                 <h4 class="text-muted pb-3">Try again</h4>
                                 <div class="d-flex input-group justify-content-center">
-                                <form action="{{ route('search') }}" class="form-inline" method="GET">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="title" placeholder="Search">
-                                        <div class="input-group-append">
-                                            <button class="input-group-text" type="submit"><i class="bi bi-search"></i></button>
+                                    <form action="{{ route('search') }}" class="form-inline" method="GET">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="title" placeholder="Search">
+                                            <div class="input-group-append">
+                                                <button class="input-group-text" type="submit"><i class="bi bi-search"></i></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
