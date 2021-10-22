@@ -103,7 +103,6 @@ class EpisodeController extends Controller
                 foreach ($episodes as $episode) {
                     $episode_number = "s${season_number}e$episode";
                     if ($tvshow->getEpisodeAirDate($season_number, $episode) > date("Y-m-d") or $tvshow->episodes->contains('episode_number', $episode_number)) {
-                        break;
                     }
                     $episode = new Episode;
                     $episode->episode_number = $episode_number;
