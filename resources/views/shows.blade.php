@@ -40,6 +40,29 @@
         </div>
     @else
         {{--TODO--}}
-        Not Found
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="flex flex-col">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class=" pt-5 pb-4 align-middle text-center inline-block min-w-full sm:px-6 lg:px-8">
+                                <h3>We didn't find any matching results for '{{ $search_request }}'.</h3>
+                                <h4 class="text-muted pb-3">Try again</h4>
+                                <div class="d-flex input-group justify-content-center">
+                                <form action="{{ route('search') }}" class="form-inline" method="GET">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="title" placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button class="input-group-text" type="submit"><i class="bi bi-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 </x-app-layout>
