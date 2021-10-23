@@ -88,7 +88,8 @@ class TvShow extends Model
             sort($aux_episodes);
             $season = end($aux_episodes)[1];
             foreach ($this->episodes as $episode) {
-                array_push($episodes, "s${season}e{$episode->episode_number[3]}");
+                $episode_number = preg_split('/[se]/', $episode->episode_number)[2];
+                array_push($episodes, "s${season}e$episode_number");
             }
             return end($episodes);
         } else {
@@ -119,15 +120,16 @@ class TvShow extends Model
 
     function getNextEpisode(): string
     {
-        $last_watched_episode = preg_split('/[se]/', $this->getLastWatchedEpisode());
+        $last_watched_season = preg_split('/[se]/', $this->getLastWatchedEpisode())[1];
+        $last_watched_episode = preg_split('/[se]/', $this->getLastWatchedEpisode())[2];
         $season_percentage = SeasonPercentage::where([
             ['tvshow_id', '=', $this->id],
-            ['season_number', '=', $last_watched_episode[1]]
+            ['season_number', '=', $last_watched_season]
         ])->first()->getPercentage();
         if ($season_percentage >= 100) {
-            return "s" . ($last_watched_episode[1] + 1) . "e1";
+            return "s" . ($last_watched_season + 1) . "e1";
         } elseif ($season_percentage > 0) {
-            return "s" . $last_watched_episode[1] . "e" . ($last_watched_episode[2] + 1);
+            return "s" . $last_watched_season . "e" . ($last_watched_episode + 1);
         } else {
             return "s1e1";
         }

@@ -26,7 +26,7 @@
                                     </div>
                                 </a>
                                 <div class="mt-2">
-                                    <form action='/show/{{ $show->tv_id }}/season/{{ $show->getNextEpisode()[1] }}/episode-unique/{{ $show->getNextEpisode()[3] }}' method="POST">
+                                    <form action='/show/{{ $show->tv_id }}/season/{{ preg_split('/[se]/', $show->getNextEpisode())[1] }}/episode-unique/{{ preg_split('/[se]/', $show->getNextEpisode())[2] }}' method="POST">
                                         @csrf
                                         {{ $show->getNextEpisode() }}
                                         <button type="submit"><i class="bi bi-eye"></i></button>
@@ -40,6 +40,9 @@
 {{--                TODO--}}
 {{--                PAGINA ESPECIFICA PARA CADA CATEGORIA (WATCH NEXT, NOT STARTED YET, ENDED)--}}
 {{--                LIMITE DE SERIES DE CADA CATEGORIA MOSTRADAS NA DASHBOARD--}}
+{{--                TODO--}}
+{{--                QUANTOS EPISODES FALTAM ASSISTIR--}}
+
             </div>
         @endif
         @if(count($not_started_shows) > 0)
@@ -62,7 +65,7 @@
                                     </div>
                                 </a>
                                 <div class="mt-2">
-                                    <form action='/show/{{ $show->tv_id }}/season/{{ $show->getNextEpisode()[1] }}/episode-unique/{{ $show->getNextEpisode()[3] }}' method="POST">
+                                    <form action='/show/{{ $show->tv_id }}/season/{{ preg_split('/[se]/', $show->getNextEpisode())[1] }}/episode-unique/{{ preg_split('/[se]/', $show->getNextEpisode())[2] }}' method="POST">
                                         @csrf
                                         {{ $show->getNextEpisode() }}
                                         <button type="submit"><i class="bi bi-eye"></i></button>
