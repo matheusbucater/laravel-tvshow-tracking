@@ -17,7 +17,20 @@ class TvShowController extends Controller
     public function dashboard(Auth $auth_user) {
         $user = User::find($auth_user::id());
         $shows = $user->tvshows();
-        return view('dashboard', ['shows' => $shows]);
+        $ended_shows = [];
+        $watch_next_shows = [];
+        $not_started_shows = [];
+        foreach ($shows as $show) {
+            $show_percentage = ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage();
+            if($show_percentage >= 100) {
+                array_push($ended_shows, $show);
+            } elseif ($show_percentage > 0) {
+                array_push($watch_next_shows, $show);
+            } else {
+                array_push($not_started_shows, $show);
+            }
+        }
+        return view('dashboard', ['shows' => $shows, 'watch_next_shows' => $watch_next_shows, 'ended_shows' => $ended_shows, 'not_started_shows' => $not_started_shows]);
     }
 
     public function search (Request $request, Auth $auth_user) {

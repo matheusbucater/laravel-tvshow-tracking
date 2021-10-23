@@ -65,6 +65,29 @@ class EpisodeController extends Controller
         return $tvshow;
     }
 
+    public function addEpisode(Auth $auth_user, $tv_id, $season_number, $episode_number) {
+        $user = User::find($auth_user::id());
+        $tvshow = TvShow::where([
+            ['user_id', '=', $user->id],
+            ['tv_id', '=', $tv_id]
+        ])->first();
+        $episode_number_string = "s${season_number}e$episode_number";
+        $episode = new Episode;
+        $episode->episode_number = $episode_number_string;
+        $episode->tvshow_id = $tvshow->id;
+        $episode->save();
+
+        $show_percentage = ShowPercentage::where('tvshow_id', $tvshow->id)->first();
+        $show_percentage->storePercentage();
+
+        $season_percentage = SeasonPercentage::where([
+            ['tvshow_id', '=', $tvshow->id],
+            ['season_number', '=', $season_number]
+        ])->first();
+        $season_percentage->storePercentage();
+        return redirect()->back();
+    }
+
     public function handleEpisodes (Auth $auth_user, $tv_id, $season_number, $episode_number) {
         $tvshow = $this->findOrCreateTvShow($auth_user, $tv_id);
         $episode_number_string = "s${season_number}e$episode_number";

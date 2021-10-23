@@ -20,14 +20,6 @@ class SeasonPercentage extends Model
 
     public function storeSeasons() {
         $tvshow = TvShow::find($this->tvshow_id);
-//        foreach ($tvshow->getSeasonsNumbers() as $season_number) {
-//            if (!$this->get()->contains($season_number)) {
-//                $percentage = $this->newInstance();
-//                $percentage->tvshow_id = $this->tvshow_id;
-//                $percentage->season_number = $season_number;
-//                $percentage->save();
-//            }
-//        }
         for ($s = $tvshow->getSeasonsNumbers()[0]; $s <= $tvshow->getSeasonsNumbers()[1]; $s++) {
             if (!$this->get()->contains($s)) {
                 $percentage = $this->newInstance();

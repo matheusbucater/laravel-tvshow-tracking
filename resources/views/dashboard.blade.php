@@ -6,28 +6,99 @@
     </x-slot>
 
     @if($shows->count() !== 0)
-        <div class="row px-5 py-4">
-            @foreach($shows as $show)
-                <div class="col-3">
-                    <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
-                        @csrf
-                        <button class="btn btn-secondary">Added</button>
-                    </form>
-                    <div class="d-flex justify-content-center text-center mb-5">
-                        <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastSeason() }}" class="text-black w-50 text-break">
-                            <img src={{ $show->getTvShowPoster() }} width=200px height=auto/>
-                            <div class="progress mx-auto align-center bg-secondary -mt-1" style="height: 8px;">
-                                <div class="progress-bar {{ \App\Models\ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage() >= 100 ? 'bg-info' : 'bg-success' }}" role="progressbar" style="width: {{ \App\Models\ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage() }}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        @if(count($watch_next_shows) > 0)
+            <div class="pl-5 pt-5">
+                <div class="pl-5 pb-2 h5">Watch next <span class="text-muted">({{ count($watch_next_shows) }})</span></div>
+            </div>
+            <div class="row px-5 pt-3">
+                @foreach($watch_next_shows as $show)
+                    <div class="col-3">
+                        <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
+                            @csrf
+                            <button class="btn btn-secondary">Added</button>
+                        </form>
+                        <div class="d-flex justify-content-center text-center mb-2">
+                            <div>
+                                <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-black w-50 text-break">
+                                    <img src={{ $show->getTvShowPoster() }} width=200px height=auto/>
+                                    <div class="progress mx-auto align-center bg-secondary -mt-1" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ \App\Models\ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage() }}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </a>
+                                <div class="mt-2">
+                                    <form action='/show/{{ $show->tv_id }}/season/{{ $show->getNextEpisode()[1] }}/episode-unique/{{ $show->getNextEpisode()[3] }}' method="POST">
+                                        @csrf
+                                        {{ $show->getNextEpisode() }}
+                                        <button type="submit"><i class="bi bi-eye"></i></button>
+                                    </form>
+                                </div>
+                                <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-muted">{{ $show->getTvShowName() }}</a>
                             </div>
-                            {{ $show->getTvShowName() }}
-                        </a>
+                        </div>
                     </div>
+                @endforeach
+{{--                TODO--}}
+{{--                PAGINA ESPECIFICA PARA CADA CATEGORIA (WATCH NEXT, NOT STARTED YET, ENDED)--}}
+{{--                LIMITE DE SERIES DE CADA CATEGORIA MOSTRADAS NA DASHBOARD--}}
+            </div>
+        @endif
+        @if(count($not_started_shows) > 0)
+            <div class="pl-5 pt-5">
+                <div class="pl-5 pb-2 h5">Not started yet<span class="text-muted">({{ count($not_started_shows) }})</span></div>
+            </div>
+            <div class="row px-5 pt-3">
+                @foreach($not_started_shows as $show)
+                    <div class="col-3">
+                        <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
+                            @csrf
+                            <button class="btn btn-secondary">Added</button>
+                        </form>
+                        <div class="d-flex justify-content-center text-center mb-2">
+                            <div>
+                                <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-black w-50 text-break">
+                                    <img src={{ $show->getTvShowPoster() }} width=200px height=auto/>
+                                    <div class="progress mx-auto align-center bg-secondary -mt-1" style="height: 8px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ \App\Models\ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage() }}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </a>
+                                <div class="mt-2">
+                                    <form action='/show/{{ $show->tv_id }}/season/{{ $show->getNextEpisode()[1] }}/episode-unique/{{ $show->getNextEpisode()[3] }}' method="POST">
+                                        @csrf
+                                        {{ $show->getNextEpisode() }}
+                                        <button type="submit"><i class="bi bi-eye"></i></button>
+                                    </form>
+                                </div>
+                                <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-muted">{{ $show->getTvShowName() }}</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+        @if(count($ended_shows) > 0)
+                <div class="pl-5 pt-5">
+                    <div class="pl-5 pb-2 h5">Ended <span class="text-muted">({{ count($ended_shows) }})</span></div>
                 </div>
-            @endforeach
-        </div>
-    <div class="d-flex justify-content-center pt-4">
-        {{ $shows->links() }}
-    </div>
+            <div class="row px-5 pt-3">
+                @foreach($ended_shows as $show)
+                    <div class="col-3">
+                        <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
+                            @csrf
+                            <button class="btn btn-secondary">Added</button>
+                        </form>
+                        <div class="d-flex justify-content-center text-center mb-2">
+                            <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-black w-50 text-break">
+                                <img src={{ $show->getTvShowPoster() }} width=200px height=auto/>
+                                <div class="progress mx-auto align-center bg-secondary -mt-1" style="height: 8px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                {{ $show->getTvShowName() }}
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
     @else
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

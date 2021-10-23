@@ -78,16 +78,58 @@ class TvShow extends Model
         return $this->getSeason($season_number)->episodes;
     }
 
-    function getLastSeason() {
+    function getLastWatchedEpisode() {
+        $aux_episodes = [];
         $episodes = [];
         if ($this->episodes->count() !== 0) {
             foreach ($this->episodes as $episode) {
-                array_push($episodes, $episode->episode_number);
+                array_push($aux_episodes, $episode->episode_number);
             }
-            rsort($episodes);
-            return preg_split('/[se]/', $episodes[0])[1];
+            sort($aux_episodes);
+            $season = end($aux_episodes)[1];
+            foreach ($this->episodes as $episode) {
+                array_push($episodes, "s${season}e{$episode->episode_number[3]}");
+            }
+            return end($episodes);
+        } else {
+            return "s1e1";
+        }
+    }
+
+    function getLastWatchedSeason() {
+        if ($this->episodes->count() !== 0) {
+            $season = preg_split('/[se]/', $this->getLastWatchedEpisode())[1];
+            $season_percentage = SeasonPercentage::where([
+                ['tvshow_id', '=', $this->id],
+                ['season_number', '=', $season]
+            ])->first()->getPercentage();
+            if ($season_percentage >= 100) {
+                if (ShowPercentage::where('tvshow_id', $this->id)->first()->getPercentage() >= 100) {
+                    return $season;
+                } else {
+                    return $season + 1;
+                }
+            } else {
+                return $season;
+            }
         } else {
             return 1;
+        }
+    }
+
+    function getNextEpisode(): string
+    {
+        $last_watched_episode = preg_split('/[se]/', $this->getLastWatchedEpisode());
+        $season_percentage = SeasonPercentage::where([
+            ['tvshow_id', '=', $this->id],
+            ['season_number', '=', $last_watched_episode[1]]
+        ])->first()->getPercentage();
+        if ($season_percentage >= 100) {
+            return "s" . ($last_watched_episode[1] + 1) . "e1";
+        } elseif ($season_percentage > 0) {
+            return "s" . $last_watched_episode[1] . "e" . ($last_watched_episode[2] + 1);
+        } else {
+            return "s1e1";
         }
     }
 

@@ -37,6 +37,8 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 
     Route::get('show/{id}/season/', [TvShowController::class, 'searchSeason'])->name('season');
 
+    Route::post('/show/{tv_id}/season/{season_number}/episode-unique/{episode_number}', [EpisodeController::class, 'addEpisode']);
+
     Route::post('/show/{tv_id}/season/{season_number}/episode/{episode_number}', [EpisodeController::class, 'handleEpisodes']);
 
     Route::post('/show/{tv_id}', [TvShowController::class, 'addTvShow']);
