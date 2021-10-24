@@ -7,11 +7,16 @@
 
     @if($shows->count() !== 0)
         @if(count($watch_next_shows) > 0)
-            <div class="pl-5 pt-5">
-                <div class="pl-5 pb-2 h5">Watch next <span class="text-muted">({{ count($watch_next_shows) }})</span></div>
+            <div class="pl-5 pt-5 pb-2">
+                @if(count(array_chunk($watch_next_shows, 4)) > 1)
+                    <a href="/watch-next" class="pl-5 pb-2 h5 text-black">Watch next <span class="text-muted">({{ count($watch_next_shows) }})</span></a>
+                    <a href="/watch-next" class="position-absolute right-20">See all ></a>
+                @else
+                    <div class="pl-5 pb-2 h5 text-black">Watch next <span class="text-muted">({{ count($watch_next_shows) }})</span></div>
+                @endif
             </div>
             <div class="row px-5 pt-3">
-                @foreach($watch_next_shows as $show)
+                @foreach(array_chunk($watch_next_shows, 4)[0] as $show)
                     <div class="col-3">
                         <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
                             @csrf
@@ -30,6 +35,7 @@
                                         @csrf
                                         {{ $show->getNextEpisode() }}
                                         <button type="submit"><i class="bi bi-eye"></i></button>
+                                        <span class="text-muted" style="font-size: 12px">+ {{ $show->getNumberOfEpisodes() - $show->getNumberOfWatchedEpisodes() }} episodes</span>
                                     </form>
                                 </div>
                                 <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-muted">{{ $show->getTvShowName() }}</a>
@@ -37,20 +43,19 @@
                         </div>
                     </div>
                 @endforeach
-{{--                TODO--}}
-{{--                PAGINA ESPECIFICA PARA CADA CATEGORIA (WATCH NEXT, NOT STARTED YET, ENDED)--}}
-{{--                LIMITE DE SERIES DE CADA CATEGORIA MOSTRADAS NA DASHBOARD--}}
-{{--                TODO--}}
-{{--                QUANTOS EPISODES FALTAM ASSISTIR--}}
-
             </div>
         @endif
         @if(count($not_started_shows) > 0)
-            <div class="pl-5 pt-5">
-                <div class="pl-5 pb-2 h5">Not started yet<span class="text-muted">({{ count($not_started_shows) }})</span></div>
+            <div class="pl-5 pt-5 pb-3">
+                @if(count(array_chunk($not_started_shows, 4)) > 1)
+                    <a href="not-started-yet" class="pl-5 pb-2 h5 text-black">Not started yet <span class="text-muted">({{ count($not_started_shows) }})</span></a>
+                    <a href="not-started-yet" class="position-absolute right-20">See all ></a>
+                @else
+                    <div class="pl-5 pb-2 h5">Not started yet <span class="text-muted">({{ count($not_started_shows) }})</span></div>
+                @endif
             </div>
             <div class="row px-5 pt-3">
-                @foreach($not_started_shows as $show)
+                @foreach(array_chunk($not_started_shows, 4)[0] as $show)
                     <div class="col-3">
                         <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
                             @csrf
@@ -69,6 +74,7 @@
                                         @csrf
                                         {{ $show->getNextEpisode() }}
                                         <button type="submit"><i class="bi bi-eye"></i></button>
+                                        <span class="text-muted" style="font-size: 12px">+ {{ $show->getNumberOfEpisodes() - $show->getNumberOfWatchedEpisodes() }} episodes</span>
                                     </form>
                                 </div>
                                 <a href="/show/{{ $show->tv_id }}/season/{{ $show->getLastWatchedSeason() }}" class="text-muted">{{ $show->getTvShowName() }}</a>
@@ -80,10 +86,15 @@
         @endif
         @if(count($ended_shows) > 0)
                 <div class="pl-5 pt-5">
-                    <div class="pl-5 pb-2 h5">Ended <span class="text-muted">({{ count($ended_shows) }})</span></div>
+                    @if(count(array_chunk($ended_shows, 8)) > 1)
+                        <a href="ended" class="pl-5 pb-2 h5 text-black">Ended <span class="text-muted">({{ count($ended_shows) }})</span></a>
+                        <a href="ended" class="position-absolute right-20">See all ></a>
+                    @else
+                        <div class="pl-5 pb-2 h5">Ended <span class="text-muted">({{ count($ended_shows) }})</span></div>
+                    @endif
                 </div>
             <div class="row px-5 pt-3">
-                @foreach($ended_shows as $show)
+                @foreach(array_chunk($ended_shows, 8)[0] as $show)
                     <div class="col-3">
                         <form action="/show/{{ $show->tv_id }}" class="form-group d-flex justify-content-center" method="POST">
                             @csrf

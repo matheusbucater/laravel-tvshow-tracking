@@ -33,6 +33,37 @@ class TvShowController extends Controller
         return view('dashboard', ['shows' => $shows, 'watch_next_shows' => $watch_next_shows, 'ended_shows' => $ended_shows, 'not_started_shows' => $not_started_shows]);
     }
 
+    public function categories(Auth $auth_user, $show_category) {
+        $user = User::find($auth_user::id());
+        $shows = $user->tvshows();
+        $ended_shows = [];
+        $watch_next_shows = [];
+        $not_started_shows = [];
+        foreach ($shows as $show) {
+            $show_percentage = ShowPercentage::where('tvshow_id', $show->id)->first()->getPercentage();
+            if($show_percentage >= 100) {
+                array_push($ended_shows, $show);
+            } elseif ($show_percentage > 0) {
+                array_push($watch_next_shows, $show);
+            } else {
+                array_push($not_started_shows, $show);
+            }
+        }
+        switch ($show_category) {
+            case 'watch-next':
+                return view('categories', ['category' => 'Watch next', 'category_shows' => $watch_next_shows]);
+                break;
+            case 'not-started-yet':
+                return view('categories', ['category' => 'Not started yet', 'category_shows' => $not_started_shows]);
+                break;
+            case 'ended':
+                return view('categories', ['category' => 'Ended', 'category_shows' => $ended_shows]);
+                break;
+            default:
+                return redirect('/dashboard');
+        }
+    }
+
     public function search (Request $request, Auth $auth_user) {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255'

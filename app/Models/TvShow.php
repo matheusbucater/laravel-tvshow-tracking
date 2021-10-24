@@ -70,6 +70,10 @@ class TvShow extends Model
         return $show->number_of_episodes;
     }
 
+    function getNumberOfWatchedEpisodes() {
+        return $this->episodes->count();
+    }
+
     function getWatchedPercentage() {
         return $this->episodes->count() * 100 / $this->getNumberOfEpisodes();
     }
