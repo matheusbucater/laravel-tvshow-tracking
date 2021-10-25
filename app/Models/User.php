@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     function tvshows() {
-        return $this->hasMany(TvShow::class)->paginate(12);
+        return $this->hasMany(TvShow::class);
     }
 
 //    function episodes() {

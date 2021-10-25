@@ -16,7 +16,7 @@ class TvShowController extends Controller
 
     public function dashboard(Auth $auth_user) {
         $user = User::find($auth_user::id());
-        $shows = $user->tvshows();
+        $shows = $user->tvshows;
         $ended_shows = [];
         $watch_next_shows = [];
         $not_started_shows = [];
@@ -35,7 +35,7 @@ class TvShowController extends Controller
 
     public function categories(Auth $auth_user, $show_category) {
         $user = User::find($auth_user::id());
-        $shows = $user->tvshows();
+        $shows = $user->tvshows;
         $ended_shows = [];
         $watch_next_shows = [];
         $not_started_shows = [];
