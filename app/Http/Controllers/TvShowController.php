@@ -80,7 +80,7 @@ class TvShowController extends Controller
         ]);
         $shows = json_decode($response->body());
         $user = User::find($auth_user::id());
-        $user_shows = $user->tvshows();
+        $user_shows = $user->tvshows;
         return view('shows', ['shows' => $shows, 'search_request' => $input, 'user' => $user, 'user_shows' => $user_shows]);
     }
 
