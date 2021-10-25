@@ -128,8 +128,8 @@ class TvShowController extends Controller
 
     public function addTvShow (Auth $auth_user, $tv_id) {
         $user = User::find($auth_user::id());
-        if ($user->tvshows()->contains('tv_id', $tv_id)) {
-            $user->tvshows()->where('tv_id', $tv_id)->first()->delete();
+        if ($user->tvshows->contains('tv_id', $tv_id)) {
+            $user->tvshows->where('tv_id', $tv_id)->first()->delete();
         } else {
             $tvshow = new TvShow;
             $tvshow->tv_id = $tv_id;
