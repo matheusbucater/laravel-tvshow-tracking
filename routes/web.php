@@ -29,9 +29,9 @@ Route::group(['middleware' => ['auth', 'web']], function () {
 
     Route::get('/dashboard', [TvShowController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/{show_category}', [TvShowController::class, 'categories']);
-
     Route::get('/search', [TvShowController::class, 'search'])->name('search');
+    
+    Route::get('/{show_category}', [TvShowController::class, 'categories']);
 
     Route::get('/show/{id}', [TvShowController::class, 'seasons']);
 
