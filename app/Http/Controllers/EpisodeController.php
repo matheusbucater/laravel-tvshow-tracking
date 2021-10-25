@@ -43,7 +43,7 @@ class EpisodeController extends Controller
 
     public function findOrCreateTvShow (Auth $auth_user, $tv_id) {
         $user = User::find($auth_user::id());
-        if ($user->tvshows()->contains('tv_id', $tv_id) === false) {
+        if ($user->tvshows->contains('tv_id', $tv_id) === false) {
             $tvshow = new TvShow;
             $tvshow->tv_id = $tv_id;
             $tvshow->user_id = $user->id;
