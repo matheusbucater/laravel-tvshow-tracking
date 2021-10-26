@@ -85,6 +85,8 @@ class EpisodeController extends Controller
             ['season_number', '=', $season_number]
         ])->first();
         $season_percentage->storePercentage();
+
+        $tvshow->touch();
         return redirect()->back();
     }
 
@@ -112,6 +114,8 @@ class EpisodeController extends Controller
            ['season_number', '=', $season_number]
         ])->first();
         $season_percentage->storePercentage();
+
+        $tvshow->touch();
         return redirect()->back();
     }
 
@@ -151,6 +155,7 @@ class EpisodeController extends Controller
         ])->first();
         $season_percentage->storePercentage();
 
+        $tvshow->touch();
         return redirect()->back();
     }
 }

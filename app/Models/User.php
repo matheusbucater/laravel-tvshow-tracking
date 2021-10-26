@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     function tvshows() {
-        return $this->hasMany(TvShow::class);
+        return $this->hasMany(TvShow::class)->orderBy('updated_at', 'desc');
     }
 
 //    function episodes() {
